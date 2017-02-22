@@ -1,0 +1,23 @@
+{
+	"groups":[
+	{
+		"keys":"bg_jpg,star,description_json",
+		"name":"preload"
+	}],
+	"resources":[
+	{
+		"name":"bg_jpg",
+		"type":"image",
+		"url":"assets/bg.jpg"
+	},
+	{
+		"name":"star",
+		"type":"image",
+		"url":"assets/star.png"
+	},
+	{
+		"name":"description_json",
+		"type":"json",
+		"url":"config/description.json"
+	}]
+}

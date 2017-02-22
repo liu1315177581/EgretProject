@@ -1,7 +1,234 @@
+http://v.youku.com/v_show/id_XNzU0MDE4OTEy.html?from=y1.2-1-87.4.1-1.1-1-2-0-0%26source%3Dautoclick 	//视频教程
+
+
 1：创建项目
 	egret create [name]
 
 2：从h5生成app
         egret create_app app_name -f h5_game_path -t template_path
 
-3：
+3：精灵（Sprite）
+	Sprite仅仅继承DisplayObjectContainer。同时添加了Graphics功能
+	
+
+	创建一个Sprite   	var spr:egret.Sprite = new egret.Sprite();
+	绘制线条		spr.graphics.lineStyle(5,0xff0000);	//1，线条的粗细  2，线条颜色
+	Sprite矢量图填充色	spr.graphics.beginFill(0xffffff);
+	Sprite矢量图形状	spr.graphics.drawRect(0,0,100,100);
+	Sprite完成绘制		spr.graphics.endFill();
+	把矢量图添加进去	this.addChild();
+
+
+	
+4，
+	DisplayObject	显示对象基类，所有显示对象均继承自此类
+	Bitmap	位图，用来显示图片
+	Shape	用来显示矢量图，可以使用其中的方法绘制矢量图形
+	TextField	文本类
+	BitmapText	位图文本类
+	DisplayObjectContainer	显示对象容器接口，所有显示对象容器均实现此接口
+	Sprite	带有矢量绘制功能的显示容器
+	Stage	舞台类
+
+
+5，
+	new一个是矢量图对象
+		var　shape:egret.Shape = new egret.Shape();
+	修改位置：
+		shape.x = 100;
+		shape.y = 20;
+	进行缩放
+		shape.scaleX = 0.5;
+		shape.scaleY = 0.5;
+	透明度操作
+		shape.alpha = 0.4;
+	进行旋转
+		shape.rotation 0.4;
+
+	alpha：透明度
+
+	width：宽度
+
+	height：高度
+
+	rotation：旋转角度
+
+	scaleX：横向缩放
+
+	scaleY：纵向缩放
+
+	skewX：横向斜切
+
+	skewY：纵向斜切
+
+	visible：是否可见
+
+	x：X轴坐标值
+
+	y：Y轴坐标值
+
+	anchorOffsetX：对象绝对锚点X
+
+	anchorOffsetY：对象绝对锚点Y
+
+6，显示容器概念
+	所有容器全部继承 DisplayObjectCOntainer类，它又继承DisplayObject
+	所以说在Rgret所有容器其实也继承DisplayObject
+
+	在Egret中，DisplayObjectContainer封装了一些显示列表中常用的功能
+		1，添加、删除子对象
+
+		2，访问子对象
+
+		3，检测子对象
+	
+		4，设置叠放次序
+	
+
+    6.1,  自定义容器
+		编写一个类，并且继承DisplayObjectContainer
+		如果实现相关的Graphics绘图，可以继承Sprite
+
+		例子：	class GridSprite extends egret.Sprite{
+				public constructor(){
+					super();
+				}
+				private drawGrid(){
+
+				}
+			}
+		
+			在文档类中，实例化GridSprite
+			var _myGrid:GridSprite = new GridSprite();
+			this.addChild(_myGrid);
+
+
+    6.2，添加与删除显示对象
+		在Egret中建立显示对象和渲染显示对象是两个过程。建立显示对象后，对象会处于内存中，但不会参与渲染过程，
+		只有把显示对象放到显示列表后，显示对象才会参与渲染过程。如果想将某个显示对象从渲染过程中删除，只需要将其移除显示列表即可。
+		
+		var spr:egret.Sprite = new egret.Sprite();
+		spr.graphics.beginFill(0x00ff00);
+		spr.graphics.drawRect(0, 0, 100, 100);
+		spr.graphics.endFill();
+
+		//添加到显示列表中
+		this.addChild(spr);
+	
+		//addChild 就是将 spr 添加到显示列表中。我们前面介绍过，显示列表是一个树状结构，这里 spr 的上一级就是 this，也就是我们的文档类。文档类是 stage 舞台的第一个子对象。
+
+    6.3，删除显示对象
+		this.removeChild(spr);
+
+    6.4，相对坐标系	
+	  相对自身父集进行定位   父集.addChild(spr);
+
+    6.5，多次添加显示对象到显示列表
+	  同一个显示对象无论被代码加入显示列表多少次，在屏幕上只绘制一次
+	  
+	  例如：显示对象同时添加到A和B中，在后添加的显示
+
+    6.6，删除操作的注意点
+	  if(spr.parent){	//判断有父集的话，从父集中删除
+		spr.parent.removeChild(spr);
+	  }
+		
+7，深度管理
+	每一个容器都会有一个自己的深度管理功能。
+	
+	获取当前容器的子对象数量  容器.numChildren
+
+    7.1	深度顺序
+	Egret中如期的深度都是从0开始的，依次递增
+	
+    7.2	添加/删除指定深度的对象
+	addChildAt(显示对象,深度值);    //把显示对象添加至指定位置
+
+	removeChildAt(深度值)		//删除指定深度的显示对象
+
+	容器.removeChildren()		//删除容器下所有的显示对象
+
+		
+    7.3	交换不同深度对象
+	容器.swapChildren(显示对象，显示对象)	//交换显示对象
+	容器.swapChildrenAt(深度值，深度值)	//交换深度值
+
+    7.4	重设子对象深度
+	容器.setChildIndex(显示对象，新的深度值)//重设显示对象的深度值
+
+
+8，访问容器子对象
+
+    8.1	通过深度获取
+
+	容器.getChildAt(深度值);	//通过深度获取容器子对象
+		例子：	var _spr:egret.DisplayObject = 容器.getChildAt(1);
+
+    8.2	通过Name获取
+	
+	容器.getChildByName('name')		//通过name获取容器子对象
+		例子：	var _spr:egret.DisplayObject = 容器.getChildByName('name');
+		
+
+9，使用矢量图
+
+    9.1	使用Shape对象来学习绘图
+	
+	例子：	var shp:egret.Shape = new egret.Shape();
+		shp.graphics.beginFill(0xff0000,1);
+		shp.graphics.drawRect(0,0,100,200);
+		shp.graphics.endFill();
+        	this.addChild( shp );
+
+    9.2	清空绘图
+	shp.graphics.clear();
+
+    9.3	绘制圆形
+	var shp:egret.Shape = new egret.Shape();
+	shp.x = 100;
+	shp.y = 100;
+	shp.graphics.lineStyle(10,0x00ff00);
+	shp.graphics.beginFill(0xff0000,1);
+	shp.graphics.drawCircle(0,0,50);	//1.x轴 2.y轴 3.圆的半径
+	shp.graphics.endFill();
+	this.addChild(shp);
+
+    9.4	绘制直线
+	moveTo(x,y)设置线条起始点
+	lineTo(x,y)设置线条终点
+		例子：	var shp:egret.Shape = new egret.Shape();
+       			shp.graphics.lineStyle( 2, 0x00ff00 );
+        		shp.graphics.moveTo( 10,10 );
+        		shp.graphics.lineTo( 100, 20 );
+        		shp.graphics.endFill();
+        		this.addChild( shp );
+
+    9.5 绘制曲线
+	moveTo(x,y)设置线条起始点
+	curveTo(p1x,p1y,p2x,p2y)指定曲线的控制点和终点
+		例子：	var shp:egret.Shape = new egret.Shape();
+       			shp.graphics.lineStyle( 2, 0x00ff00 );
+        		shp.graphics.moveTo( 50, 50);
+        		shp.graphics.curveTo( 100,100, 200,50);
+        		shp.graphics.endFill();
+        		this.addChild( shp );
+    9.6	绘制圆弧
+	drawArc( x:number, y:number, radius:number, startAngle:number, endAngle:number, anticlockwise:boolean ):void
+	x,y		圆弧圆心位置
+	radius		圆的半径
+	startAngle	的起始点是从 x 轴方向开始计算的
+	endAngle	的终点
+	anticlockwise	顺时针false 逆时针true
+
+10，矩形遮罩
+	shp.mask = new egret.Rectangle(20,20,30,50);	//给容器对象加一个遮罩
+	
+	shp.mask = null;	//可删除遮罩
+	
+	定义遮罩：
+		若要指明一个显示对象将是另一个显示对象的遮罩，请将遮罩对象设置为被遮罩的显示对象的 mask 属性：
+
+
+
+
+
