@@ -231,6 +231,6 @@ http://v.youku.com/v_show/id_XNzU0MDE4OTEy.html?from=y1.2-1-87.4.1-1.1-1-2-0-0%2
 
 11，MoiveClip(动画片段)
 	MoiveClip相当于一个小的动画片段，其中包含了多个单独的帧(图片)，在连续播放是，就形成了动画的效果。
-
+	嘿嘿
 
 

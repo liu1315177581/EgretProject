@@ -1,5 +1,6 @@
 {
-  
   "autoGenerateExmlsList": true,
-  "exmls": []
+  "exmls": [
+    "src/Game.exml"
+  ]
 }
